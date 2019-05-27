@@ -1,17 +1,23 @@
 
 <launch>
 <node pkg="tf_workshop" type="odom2tfchild" name="odom2tfchild">
-    <param name="publish_tf_offset" value="true" />
+
+    <param name="odom_topic" value="/vmc_navserver/state" />
+
+    <param name="publish_additional_child_link" value="true" />
+    <param name="offset_link" value="/velodyne" />
+
     <param name="offset_x" value="1.1792" />
     <param name="offset_y" value="-0.2858" />
     <param name="offset_z" value="2.0" />
     <param name="offset_ex" value="0" />
     <param name="offset_ey" value="0" />
     <param name="offset_ez" value="-1.58804" />
-    <param name="odom_topic" value="/vmc_navserver/state" />
-    <param name="odom_parent_link" value="/world" />
-    <param name="odom_child_link" value="/state_base_link" />
 
+    <param name="parent_new_frame" value="true" />
+    <param name="odom_parent_link" value="/world" />
+    <param name="odom_child_link" value="/new_base_link" />
+    <param name="publish_new_frame_odom" value="true" />
 
 
 </node>

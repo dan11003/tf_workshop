@@ -57,3 +57,9 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
  add_executable(odom2tfchild src/odom2tfchild.cpp)
 target_link_libraries(odom2tfchild ${catkin_LIBRARIES} )
+
+add_executable(imu2tf src/imu2tf.cpp)
+target_link_libraries(imu2tf ${catkin_LIBRARIES} )
+
+add_executable(tf_dynamic_publisher src/tf_dynamic_publisher.cpp)
+target_link_libraries(tf_dynamic_publisher ${catkin_LIBRARIES} )

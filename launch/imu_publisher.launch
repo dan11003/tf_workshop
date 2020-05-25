@@ -1,0 +1,7 @@
+
+<launch>
+<node pkg="tf_workshop" type="imu2tf" name="imu2tf" output="screen">
+    <param name="imu_topic" value="/imu/data" />
+</node>
+</launch>
+

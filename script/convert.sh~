@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+bag_folder="/mnt/disk0/ILIAD_remote/rosbags/Orkla/2019-06_Campaign_2/2019-06-13_processesd"
+bag_name="Orkla_2019-06-13_001.bag_edited.bag"
+txt_folder="/mnt/disk0/ILIAD_remote/rosbags/Orkla/2019-06_Campaign_2/2019-06-13_processed_corrections"
+finished_folder="/mnt/disk0/ILIAD_remote/rosbags/Orkla/2019-06_Campaign_2/2019-06-14-final"
+rosrun tf_workshop insertTxtToBag.py $bag_name $bag_folder $txt_folder $finished_folder
+#                                   bag file                           

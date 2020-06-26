@@ -18,25 +18,24 @@ import rospy
 
 import sys
 
-​
 
-​
 
 bagfile_name = sys.argv[1]  #parameter
+input_bag_folder = sys.argv[2]
+input_txt_folder = sys.argv[3]
+output_folder = sys.argv[4]
 
-copyfile(bagfile_name,"./final_bags/"+bagfile_name+"_final.bag")
+copyfile(input_bag_folder+bagfile_name,output_folder+bagfile_name+"_final.bag")
 
-final_bag = rosbag.Bag("./final_bags/"+bagfile_name+"_final.bag","a")
+final_bag = rosbag.Bag(output_folder+bagfile_name+"_final.bag","a")
 
-​
 
 try:
 
-	corrections = numpy.loadtxt(bagfile_name+"_edited.bag_correction.txt",dtype=str)
+	corrections = numpy.loadtxt(input_txt_folder+bagfile_name+"_correction.txt",dtype=str)
 
 	#corrections = [t,x,y,z, o_x,o_y,o_z,o_w, parent_frame_id, child_frame_id]
 
-​
 
 	tf_tree = TFMessage()
 
@@ -44,11 +43,9 @@ try:
 
 	odom2basefoot = TransformStamped()
 
-​
 
 	basefoot2baselink = TransformStamped()
 
-​
 
 	basefoot2baselink.header.frame_id = "robot3/base_footprint"
 
@@ -68,7 +65,6 @@ try:
 
 	basefoot2baselink.transform.rotation.w = 1
 
-	
 
 	baselink2velo = TransformStamped()
 
@@ -92,7 +88,6 @@ try:
 
 	
 
-​
 
 	#final_bag.write('/tf',)
 
@@ -100,9 +95,7 @@ try:
 
 	for topic,msg,t in final_bag.read_messages(topics=['/robot3/control/odom']):
 
-​
-
-		# choosing the best correction for the odometry using the closest time(in the past)
+	# choosing the best correction for the odometry using the closest time(in the past)
 
 		min_diff = 1000000000
 
@@ -122,7 +115,6 @@ try:
 
 				break
 
-​
 
 		# applying selected correction in the tf
 
@@ -148,7 +140,7 @@ try:
 
 		map2odom.transform.rotation.w = float(corrections[index][7])
 
-​
+
 
 		#using odom topic to populat the tf transform
 
@@ -172,19 +164,13 @@ try:
 
 		odom2basefoot.transform.rotation.w = msg.pose.pose.orientation.w
 
-​
 
 		#the values on those transform are fixed. we only update the time
 
 		basefoot2baselink.header.stamp = msg.header.stamp
 
-​
 
-		baselink2velo.header.stamp = msg.header.stamp
-
-​
-
-		# build the message and append to the rosbag file
+		baselink2velo.header.stamp = msg.header.stamp # build the message and append to the rosbag file
 
 		tf_tree.transforms = []
 
@@ -196,23 +182,22 @@ try:
 
 		tf_tree.transforms.append(baselink2velo)
 
-​
+
 
 		#print tf_tree
 
 		final_bag.write('/tf',tf_tree,msg.header.stamp)
 
-​
+
 
 	final_bag.close()
 
-​
+
 
 except Exception as e:
 
 	raise e
 
-​
 
 finally:
 
